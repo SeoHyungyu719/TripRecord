@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>DashBoard</title>
+<link href="css/admin/dashBoard.css" rel="stylesheet" type="text/css">
+<link href="css/admin/adminAll.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- 파비콘 -->
+<link rel="icon" href="image/icon_case.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="image/icon_case.ico" type="image/x-icon"/>
+<!-- 끝 -->
+</head>
+<body>
+	<div class="width: 100%;">
+		<div th:replace="~{common/adminHeader :: header}"></div>
+		<div class="container-box" style="margin: 0; padding: 0px; width: 100%;">
+			<div class="board-list">	
+				<div class="board-list-ul-content">	
+					<ul class="board-list-ul">
+						<li class="select-board"><a href="dashBoard.ad">대시보드</a></li>
+						<li><a href="memberManage.ad">회원 관리</a></li>
+						<li><a href="questManage.ad">문의사항 관리</a></li>
+						<li><a href="gradeManage.ad">등급 관리</a></li>
+						<li><a href="noticeManage.ad">공지사항 관리</a></li>
+						<li><a href="pointManage.ad">포인트 관리</a></li>
+						<li><a href="boardManage.ad">게시판 관리</a></li>
+						<li><a href="hashTagManage.ad">해시태그 관리</a></li>
+						<li><a href="contentImgManage.ad">사진 관리</a></li>
+						<li><a href="planManage.ad">일정 관리</a></li>
+						<li><a href="otherManage.ad">기타 관리</a></li>
+					</ul>
+				</div>
+				<div class="out-adminPage">
+					<a class="out-text" href="/home"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+	  <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+	  <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/>
+	</svg>&nbsp; 관리자 페이지 나가기</a>
+				</div>
+			</div>
+			<div class="board-main">
+				<div class="title-board display-4">
+					<h1 style="display: inline; font-size: 2.5rem !important;">DashBoard</h1>
+				</div>
+				<div class="container-top display-flex">
+					<div class="enter-container">
+						<div class="title-div">
+							<span class="title-text">접속 통계</span>
+						</div>
+						<div class="content-enter">
+							<div class="enter-box" style="text-align: center;">
+								<canvas id="enter-stats"></canvas>
+							</div>
+						</div>
+					</div>
+					<div class="contents-container">
+						<div class="title-div">
+							<span class="title-text">컨텐츠 등록 통계</span>
+						</div>
+						<div class="content-user rounded-2">
+							<table class="table-user table">
+								<thead>
+									<tr style="border-bottom: 1px solid #96caf0; border-bottom-width: medium;">
+										<th class="td-user">분류</th>
+										<th>개수</th>
+									</tr>
+								</thead>
+							  	<tbody>
+							  		<tr class="tr-user" th:each="p : ${placeCount}">
+						      			<td class="td-user" style="width: 40%;">[[${p.contentTypeName}]]</td>
+										<td> [[${p.count}]] </td>
+									</tr>
+							  	</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="sum-quest">
+						<div class="title-div">
+							<span class="title-text">확인되지 않은 목록</span>
+						</div>
+						<div class="quest-table rounded-2">
+							<table class="table-user table">
+							  	<tbody>
+							  		<tr>
+							      		<td class="td-user" style="width: 40%;">문의사항</td>
+							      		<td> [[${noAnswerCount}]] </td>
+							  		</tr>
+							    	<tr class="tr-user">
+							      		<td class="td-user">등급</td>
+							      		<td> [[${gradeCount}]] </td>
+							  		</tr>
+							  	</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="container-bottom display-flex">
+					<div class="user-container">
+						<div class="title-div">
+							<span class="title-text">사용자 통계</span>
+						</div>
+						<div class="content-user rounded-2">
+							<table class="table-user table">
+							  	<tbody>
+							    	<tr>
+							      		<td class="td-user" style="width: 40%;">전체 회원</td>
+							      		<td> [[${totalCount}]] </td>
+							  		</tr>
+							  		<tr class="tr-user">
+							      		<td class="td-user">일반 회원</td>
+							      		<td> [[${generalCount}]]</td>
+							  		</tr>
+							  		<tr class="tr-user">
+							      		<td class="td-user">플래너</td>
+							      		<td> [[${plannerCount}]] </td>
+							  		</tr>
+							  		<tr class="tr-user">
+							      		<td class="td-user">관리자</td>
+							      		<td> [[${adminCount}]] </td>
+							  		</tr>
+							  	</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="money-container">
+						<div class="title-div">
+							<span class="title-text">매출 통계</span>
+						</div>
+						<div class="money-box">
+							<div class="money-total">
+								<div class="total-text">
+									전체 매출
+								</div>
+								<div class="total-sum">
+									[[${#numbers.formatInteger(total.poPrice, 3, 'COMMA')}]]
+								</div>
+							</div>
+							<div class="money-month-day">
+								<div class="money-month">
+									<span style="font-weight: normal; font-size: 20px; padding-left:20px;">월별 매출</span>
+									<canvas class="w-100" id="month-stats"></canvas>
+								</div>
+								<div class="money-day">
+									<span style="font-weight: normal; font-size: 20px; padding-left:20px;">일별 매출</span>
+									<canvas class="w-100" id="days-stats"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script>
+	<script th:inline="javascript">
+			/* <![CDATA[ */
+			const monthStats = /*[[${monthStats}]]*/null;
+			const dayStats = /*[[${dayStats}]]*/null;
+			const data = /*[[${datedata}]]*/null;
+			/* ]]> */
+			
+			console.log(monthStats);
+			// 오늘 날짜를 불러오는 함수
+			const today = new Date();
+			
+			// 날짜를 yy-MM-dd로 나타나게 해주는 함수
+			const getDateFormat = date => {
+				const year = (date.getFullYear() + "").slice(-2);
+				const month = ('0' + (date.getMonth() + 1)).slice(-2);
+				const day = ('0' + date.getDate()).slice(-2);
+				
+				return year + '-' + month + '-' + day;
+			}
+			
+			// 날짜를 MM로 나타나게 해주는 함수
+			const getMonthFormat = date => {
+				const month = ('0' + (date.getMonth() + 1)).slice(-2);
+				
+				return month;
+			}
+			
+			// yyMM 형식으로 결제 금액을 조회하는 함수
+			const getPayMonthFormat = date => {
+				const year = ('0' + (date.getMonth() + 1)).slice(-2) <= ('0' + (new Date().getMonth() + 1)).slice(-2) ? (new Date().getFullYear() + "") : ((new Date().getFullYear() - 1) + "");
+				console.log('테스트 년도');
+				console.log(year);
+				const month = ('0' + (date.getMonth() + 1)).slice(-2);
+				
+				return year + month;
+			}
+			
+			// 날짜를 dd로 나타나게 해주는 함수
+			const getDayFormat = date => {
+				const day = ('0' + date.getDate()).slice(-2);
+				
+				return day;
+			}
+			
+			// yyMMdd 형식으로 결제 금액을 조회하는 함수
+			const getPayDayFormat = date => {
+				const year = (date.getFullYear() + "");
+				const month = ('0' + (date.getMonth() + 1)).slice(-2);
+				const day = ('0' + date.getDate()).slice(-2);
+				
+				return year + month + day;
+			}
+			
+			// n일 전 날짜를 출력하는 코드
+			// 날짜와 며칠 전인지 전부 지정해서 넣으면 됨
+			const getDate = (date, days) => {
+				return new Date(new Date().setDate(date.getDate() - days));
+			}
+			
+			// n달 전 날짜를 출력하는 코드
+			const getMonth = (date, months) => {
+				const nowDate = new Date(new Date().setDate(12));
+				const subDate = new Date(new Date().setDate(12));
+				nowDate.setMonth(date.getMonth());
+				subDate.setMonth(months);
+				
+				const result = (new Date((nowDate) - (subDate)));
+				
+				return result;
+			}
+			
+			// 어제 날짜를 출력하는 코드
+			// today.getDate() - n -> n일 전을 밀리세컨드(ms)로 표현
+			
+			const months = () => {
+				// Graphs
+				const ctx = document.getElementById('month-stats').getContext('2d');
+				
+				const getSafeMonthStats = (date) => {
+			        const monthFormat = getPayMonthFormat(date);
+			        return monthStats[monthFormat] || 0;
+			    };
+			    
+			 	// 데이터 준비
+			    const months = [];
+			    const dataPoints = [];
+			    for (let i = 11; i >= 0; i--) {
+			        const date = getMonth(today, i);
+// 			        console.log('정산');
+// 			        console.log(date);
+			        months.push(getMonthFormat(date));
+// 			        console.log('포멧');
+// 			        console.log(getMonthFormat(date));
+			        dataPoints.push(getSafeMonthStats(date));
+// 			        console.log(getSafeMonthStats(date));
+			        console.log('-----------------------');
+			    }
+				
+				// eslint-disable-next-line no-unused-vars
+				const myChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: months,
+						datasets: [{
+							label: '월별 매출',
+							data: dataPoints,
+							backgroundColor: '#96caf0',
+							borderColor: '#96caf0',
+							borderWidth: 1,
+						}]
+					},
+					options: {
+						 responsive: true,
+						 plugins: {
+					            legend: {
+					                display: false // 범례를 표시하려면 true로 설정
+					            }
+					        },
+					     scales: {
+					     			y: {
+					                	beginAtZero: true // Y축이 0에서 시작하도록 설정
+					            	}
+					     }
+					}
+				});
+			}
+			
+			const days = () => {
+				// Graphs
+				const ctx = document.getElementById('days-stats').getContext('2d');
+				
+				const getSafeDayStats = (date) => {
+			        const dayFormat = getPayDayFormat(date);
+			        
+			        return dayStats[dayFormat] || 0;
+			    };
+			    
+			 	// 데이터 준비
+			    const days = [];
+			    const dataPoints = [];
+			    for (let i = 6; i >= 0; i--) {
+			        const date = getDate(today, i);
+			        days.push(getDayFormat(date));
+			        dataPoints.push(getSafeDayStats(date));
+			    }
+				
+				// eslint-disable-next-line no-unused-vars
+				const myChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: days,
+						datasets: [{
+							label: '일별 매출',
+							data: dataPoints,
+							backgroundColor: '#96caf0',
+							borderColor: '#96caf0',
+							borderWidth: 1,
+						}]
+					},
+					options: {
+						 responsive: true,
+						 plugins: {
+					            legend: {
+					                display: false // 범례를 표시하려면 true로 설정
+					            }
+					        },
+					     scales: {
+					     			y: {
+					                	beginAtZero: true // Y축이 0에서 시작하도록 설정
+					            	}
+					     }
+					}
+				});
+			}
+			
+			const enter = () => {
+				
+				// Graphs
+				const ctx = document.getElementById('enter-stats');
+				// eslint-disable-next-line no-unused-vars
+				const myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: [
+							getDateFormat(getDate(today, 9)),
+							getDateFormat(getDate(today, 8)),
+							getDateFormat(getDate(today, 7)),
+							getDateFormat(getDate(today, 6)),
+							getDateFormat(getDate(today, 5)),
+							getDateFormat(getDate(today, 4)),
+							getDateFormat(getDate(today, 3)),
+							getDateFormat(getDate(today, 2)),
+							getDateFormat(getDate(today, 1)),
+							getDateFormat(today)
+						],
+						datasets: [{
+							data: [
+								data[getDateFormat(getDate(today, 9))] == undefined ? 0 : data[getDateFormat(getDate(today, 9))],
+								data[getDateFormat(getDate(today, 8))] == undefined ? 0 : data[getDateFormat(getDate(today, 8))],
+								data[getDateFormat(getDate(today, 7))] == undefined ? 0 : data[getDateFormat(getDate(today, 7))],
+								data[getDateFormat(getDate(today, 6))] == undefined ? 0 : data[getDateFormat(getDate(today, 6))],
+								data[getDateFormat(getDate(today, 5))] == undefined ? 0 : data[getDateFormat(getDate(today, 5))],
+								data[getDateFormat(getDate(today, 4))] == undefined ? 0 : data[getDateFormat(getDate(today, 4))],
+								data[getDateFormat(getDate(today, 3))] == undefined ? 0 : data[getDateFormat(getDate(today, 3))],
+								data[getDateFormat(getDate(today, 2))] == undefined ? 0 : data[getDateFormat(getDate(today, 2))],
+								data[getDateFormat(getDate(today, 1))] == undefined ? 0 : data[getDateFormat(getDate(today, 1))],
+								data[getDateFormat(today)] == undefined ? 0 : data[getDateFormat(today)]
+							],
+							lineTension: 0,
+							backgroundColor: 'transparent',
+							borderColor: '#007bff',
+							borderWidth: 2,
+							pointBackgroundColor: '#96caf0'
+						}]
+					},
+					options: {
+						plugins: {
+							legend: {
+								display: false
+							},
+							tooltip: {
+								boxPadding: 3
+							}
+							
+						},
+						scales: {
+			     			y: {
+			                	beginAtZero: true // Y축이 0에서 시작하도록 설정
+			            	}
+			    		}
+					}
+				})
+			}
+			
+			
+		window.onload = () => {	
+			const listLi = document.getElementsByClassName('board-list-ul')[0].children;
+			const current = document.getElementsByClassName('select-board')[0];
+			
+			for(const li of listLi){
+				const a = li.children[0];
+				li.addEventListener('mouseenter', function() {
+					current.style.transitionDuration = '300ms';
+					li.style.transitionDuration = '300ms';
+					if(li.className != 'select-board'){
+						current.className = '';
+						this.className = 'select-board';
+						
+					}
+				});
+				
+				li.addEventListener('mouseleave', function(){
+					li.style.transitionDuration = '300ms';
+					if(li.className == 'select-board' && li != current){
+						current.className = 'select-board';
+						this.className = '';
+					}
+				});
+				
+			}
+			
+			months();
+			days();
+			enter();
+			
+		}
+	</script>
+</body>
+</html>

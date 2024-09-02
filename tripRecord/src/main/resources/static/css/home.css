@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+#mainContainer {
+	width: 1400px;
+	margin-top: 50px;
+	padding-bottom: 30px;
+	margin-bottom: 50px;
+}
+
+.goSchedule {
+	height: 550px;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+.goSchedule-text {
+	margin: 15px 10px;
+	padding: 10px;
+	right: 0;
+	top: 0;
+	color: #2F6598;
+	background: white;
+	border-radius: 10px;
+	opacity: 0.9;
+	cursor: pointer;
+}
+
+.medalDiv {
+	margin: 10px 5px;
+}
+
+.medal {
+	width: 60px;
+	height: 60px;
+}
+
+.local-card, .planner-card {
+	height: 240px;
+	margin: 3px 10px;
+	cursor: pointer;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+.planner-card-local {
+	bottom: 36px;
+	right: 0;
+	background: #2F6598;
+	opacity: .9;
+	border-radius: 5px;
+	color: white;
+}
+
+
+.planner-card-text {
+	bottom: 0;
+	right: 0;
+	background: #2F6598;
+	opacity: .9;
+	border-radius: 5px;
+	color: white;
+}
+
+.local-card-text {
+	bottom: 0;
+	right: 0;
+	background: #96caf0;
+	opacity: .9;
+	border-radius: 5px;
+	color: white;
+}
+
+.local-card-img, .planner-card-img {
+	width: 100%;
+	height: 250px;
+	object-fit: cover;
+	transition: all .5s ease;
+	border-radius: 5px;
+}
+
+.local-card-img:hover, .planner-card-img:hover {
+	object-fit: cover;
+	border-radius: 5px;
+	transform: scale(1.1);
+	transition: all .5s ease;
+	opacity: .75;
+}
+
+.place-card {
+	text-align: center;
+	height: 240px;
+	margin: 3px 10px;
+	cursor: pointer;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+.place-card img {
+	width: 100%;
+	height: 250px;
+	object-fit: cover;
+	transition: all .5s ease;
+	border-radius: 5px;
+}
+
+.place-card p {
+	font-size: 20px;
+	color: white;
+	background: #96caf0;
+	font-weight: bold;
+	opacity: 0.5;
+}
+
+.place-card:hover {
+	cursor: pointer;
+}
+
+.place-card:hover img {
+	opacity: 0.5;
+	transform: scale(1.1);
+	transition: all .5s ease;
+}
+
+.place-card:hover p {
+	opacity: 1;
+	transform: translateY(-120px);
+	transition: all .5s ease-in-out;
+}
+
+#planImg {
+	cursor: pointer;
+}
+
+#topPlace {
+	margin-bottom: 50px;
+}
+
+#fixed-width {
+	width: 700px; /* 고정 너비 설정 */
+	height: 430px;
+    margin-top:20px;
+}
+#fixed-width2 {
+	width: 450px; /* 고정 너비 설정 */
+	height: 410px;
+    margin-top:20px;
+}
+
+.vertical-line {
+	width: 1px; /* 선의 너비 */
+	background-color: lightgray; /* 선의 색상 */
+	margin: 0 60px; /* 선과 양쪽 div 사이의 간격 */
+	height: 390px;
+}
+
+.container {
+	display: flex;
+	align-items: center; /* 세로 정렬을 가운데로 맞춤 */
+}
+
+.truncate {
+	white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+	overflow: hidden; /* 넘치는 텍스트를 숨김 */
+	text-overflow: ellipsis; /* 잘린 텍스트를 ...로 표시 */
+	max-width: 100%; /* 부모 요소의 너비에 맞춤 */
+}
+
+table {
+	text-align: center;
+	table-layout: fixed;
+	width: 100%;
+	margin-top: 20px;
+}
+
+table thead{
+    border-bottom: 1px solid lightblue ;
+    
+}
+
+tr td{
+    padding-top: 8px;
+}
+tr td:hover{
+	cursor:pointer;
+}
+.justify-content-between a{
+    text-decoration: none ;
+    color: gray; 
+}

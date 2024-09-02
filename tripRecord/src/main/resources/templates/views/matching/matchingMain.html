@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>'여기'에만 있는 전문 플래너</title>
+<link type="text/css" href="css/matching/matchingMain.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link rel="icon" href="image/icon_case.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="image/icon_case.ico" type="image/x-icon"/>
+</head>
+<body>
+	<div th:replace="~{ common/logoBar :: logoBar }"></div>
+	<div th:replace="~{ common/mainCategoryBar :: mainCategoryBar }"></div>
+	
+	<div id="mainContainer" class="container-fluid justify-content-center">
+		<div class="d-flex justify-content-between align-items-center">
+			<div class="d-none" id="localNoDiv"></div>
+			<div class="d-none" id="conDiv"></div>
+			<div class="fs-2 my-3 ms-5">플래너 정보 📖✏️</div>
+		</div>
+		<div class="sContainer d-flex justify-content-center">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" th:each="l : ${ localList }">
+						<div class="local-card shadow position-relative">
+							<input type=hidden th:value="${l.localNo}">
+								<img class="local-img position-absolute" th:src="|https://drive.google.com/thumbnail?id=${l.imageRename}&sz=w1000|" th:alt="${l.localName}">
+							<span class="card-text position-absolute fs-2 px-3">[[${l.localName}]]</span>
+						</div>
+						
+					</div>
+				</div>
+				<div class="swiper-pagination"></div>
+				<div class="swiper-button-wrapper">
+					<div class="swiper-button-next"></div>
+		    		<div class="swiper-button-prev"></div>
+	    		</div>
+			</div>
+		</div>
+		<hr/>
+		<div class="d-flex justify-content-end">
+			<select class="form-select" style = "width : 200px">
+				<option class="filter-list selected" value="0" selected>정렬 기준</option>
+				<option class="filter-list" value="1">좋아요 순</option>
+				<option class="filter-list" value="2">별점 순</option>
+				<option class="filter-list" value="3">후기 많은 순</option>
+			</select>
+		</div>
+		
+		<th:block th:if="${ pi.listCount != 0 }">
+		<div class="d-flex justify-content-center my-2">
+			<div class="w-75">
+				<div class="fs-5 p-3 w-100">
+					<div>
+		         		<div class="d-flex justify-content-center">
+		         			<table class="text-center">
+			         			<tr>
+				         			<th class="d-none">번호</th>
+		         					<th width="110px">사진</th>
+					         		<th width="200px">플래너닉네임</th>
+					         		<th width="150px">지역</th>
+					         		<th width="300px">플래너 소개</th>
+					         		<th width="200px" style="font-size: 15px">❤️ 좋아요 ⭐ 별점 📝 후기수</th>
+				         		</tr>
+			         		</table>
+			         	</div>
+		         	</div>
+	         		<!-- 플래너 정보 -->
+	         		<div class="d-flex justify-content-center my-2">
+		         		<div class="plannerListContainer">
+			         		<table class="plannerList text-center my-3" th:each="planner : ${ list }">
+				         		<tr>
+				         			<td class="d-none">[[${planner.memberNo}]]</td>
+				         			
+		         					<td th:if="${planner.imageRename != null }">
+		         						<img class="rounded-circle m-3" th:src="|https://drive.google.com/thumbnail?id=${planner.imageRename}&sz=w1000|" width="75px" height="75px" alt="프로필">
+		         					</td>	
+		         					<td th:if="${planner.imageRename == null }">
+		         						<img class="rounded-circle m-3" src="image/noProfile.png" width="75px" height="75px" alt="프로필">
+		         					</td>
+					         		<td class="fs-4" width="200px">[[${planner.Nickname}]]</td>
+					         		<td width="150px">[[${planner.localName}]]</td>
+					         		<td width="300px">
+					         			<div class="sIntro" style="white-space:pre-wrap;">[[${planner.sIntroContent}]]</div>
+					         		</td>
+					         		<td class="fs-5 text-start px-5" width="200px">
+					         			❤️ [[${likes[planner.memberNo]}]]<br/>
+					         			<th:block th:if="${star[planner.memberNo]} != null">
+					         			⭐ [[${star[planner.memberNo]}]]<br/>
+					         			</th:block>
+					         			<th:block th:if="${star[planner.memberNo]} == null">
+					         			⭐ 0.0<br/>
+					         			</th:block>
+				         				📝 [[${rCount[planner.memberNo]}]]
+					         		</td>
+				         		</tr>
+			         		</table>
+		         		</div>
+		         	</div>
+		        </div>
+        	</div>
+		</div>
+		<nav class="d-flex justify-content-center">
+        	<ul id="pagination" class="pagination" th:with="loc=${ loc }">
+        		 <!-- 이전 버튼 -->
+	            <li class="page-item">
+	            	<a id="prevBtn" class="prevBtn page-link" th:classappend="${pi.currentPage == 1} ? 'disabled'" aria-label="Previous">
+	            		<span aria-hidden="true">&laquo;</span>
+	              	</a>
+	            </li>
+	            
+	             <!-- 페이지 넘버링 버튼  -->
+	            	
+				<li class="pageBtn page-item" th:each="p : ${ #numbers.sequence(pi.startPage, pi.endPage) }">
+					<a th:style="${ pi.currentPage == p } ? 'font-weight:bold; font-size:1.1em; color:#96caf0;' : ''" class="page-link">[[${ p }]]</a>
+				</li>
+	           
+	             <!-- 다음 버튼  -->
+	            <li class="page-item">
+	            	<a id="nextBtn" class="page-link" th:classappend="${pi.currentPage == pi.maxPage} ? 'disabled'" aria-label="Next">
+	            		<span aria-hidden="true">&raquo;</span>
+	            	</a>
+	            </li>
+	    	</ul>
+        </nav>
+        
+		</th:block>
+		<th:block th:if="${ pi.listCount == 0 }">
+			<div style="height: 100px"></div>
+			<div class="d-flex justify-content-center m-3" style="height: 500px">
+				<h1> 등록된 플래너가 없습니다. </h1>
+			</div>
+		</th:block>
+		</div>
+	<div th:replace="~{ common/footer.html :: footer }"></div>
+</body>
+
+<script th:inline='javascript'>
+
+window.onload = () => {
+	const plannerList = document.getElementsByClassName('plannerList');
+	for(const planner of plannerList){
+		planner.addEventListener('click', function(){
+			const pNo = planner.children[0].children[0].children[0].innerText;
+			location.href="selectPlanner.ma?pNo="+ pNo + "&page=1";
+		});
+	}
+}
+/*<![CDATA[*/
+const localName = /*[[${localList}]]*/1;
+/*]]>*/
+document.addEventListener("DOMContentLoaded", function() {
+    var mySwiper = new Swiper('.swiper-container', {
+        slidesPerView: 5,
+        slidesPerGroup: 1,
+        spaceBetween: 24,
+        pagination: { 
+        	el: ".swiper-pagination", 
+        	clickable: true,
+        	},
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        loop : true,
+    });
+    let pRange = document.getElementsByClassName('swiper-pagination');
+});
+
+const cards = document.getElementsByClassName('local-card');
+for (const card of cards) {
+    card.addEventListener('click', function() {
+    	const localNo = this.children[0].value;
+    	const condition = 0;
+        getPlannerList(localNo, condition, 1);
+    });
+}
+
+const filterList = document.querySelector('select');
+const localNoDiv = document.getElementById('localNoDiv');
+const conDiv = document.getElementById('conDiv');
+
+//matchingMain.ma 다음페이지 구현
+const nextBtn = document.getElementById('nextBtn');
+nextBtn.addEventListener('click',function(){
+	let localNo = localNoDiv.innerText;
+	let condition = conDiv.innerText;
+	
+	if(localNo == '') {
+		const url = new URL(window.location);
+		const urlParams = url.searchParams;
+		localNo = urlParams.get('localNo');
+		if(localNo == null) {
+			localNo = 1;
+		}
+	}
+	if(condition == '' || condition == "undefined" ) {
+		const url = new URL(window.location);
+		const urlParams = url.searchParams;
+		condition = urlParams.get('condition');
+		if(condition == null) {
+			condition = 0;
+		}
+	}
+	/*<![CDATA[*/
+	const nextPage = /*[[${pi.currentPage + 1}]]*/0;
+	/*]]>*/
+	location.href = "matchingMain.ma?page=" + nextPage + "&localNo=" + localNo + "&condition=" + condition;
+});
+
+//matchingMain.ma 이전페이지 구현
+const prevBtn = document.getElementById('prevBtn');
+prevBtn.addEventListener('click',function(){
+	let localNo = localNoDiv.innerText;
+	let condition = conDiv.innerText;
+	
+	if(localNo == '') {
+ 	    const url = new URL(window.location);
+ 	    const urlParams = url.searchParams;
+ 	    localNo = urlParams.get('localNo');
+ 	    if(localNo == null) {
+ 	    	localNo = 1;
+ 	    }
+	}
+	if(condition == '' || condition == "undefined" ) {
+ 	    const url = new URL(window.location);
+ 	    const urlParams = url.searchParams;
+ 	   condition = urlParams.get('condition');
+ 	    if(condition == null) {
+ 	    	condition = 0;
+ 	    }
+	}
+	/*<![CDATA[*/
+	const prevPage = /*[[${ pi.currentPage - 1 }]]*/0;
+	/*]]>*/
+	location.href = "matchingMain.ma?page=" + prevPage + "&localNo=" + localNo + "&condition=" + condition;
+});
+
+const pageBtns = document.getElementsByClassName('pageBtn');
+for (const pageBtn of pageBtns) {
+	pageA = pageBtn.children[0];
+	pageA.addEventListener('click',function(){
+		let localNo = localNoDiv.innerText;
+		let condition = conDiv.innerText;
+		
+		if(localNo == '') {
+	 	    const url = new URL(window.location);
+	 	    const urlParams = url.searchParams;
+	 	    localNo = urlParams.get('localNo');
+	 	    if(localNo == null) {
+	 	    	localNo = 1;
+	 	    }
+		}
+		if(condition == '' || condition == "undefined" ) {
+	 	    const url = new URL(window.location);
+	 	    const urlParams = url.searchParams;
+	 	   condition = urlParams.get('condition');
+	 	    if(condition == null) {
+	 	    	condition = 0;
+	 	    }
+		}
+		/*<![CDATA[*/
+		const page = this.innerText
+		/*]]>*/
+		location.href = "matchingMain.ma?page=" + page + "&localNo=" + localNo + "&condition=" + condition;
+	});
+}
+
+
+
+
+filterList.addEventListener('change', function(){
+	let localNo = localNoDiv.innerText;
+	const condition = this.value;
+	
+	if(localNo == '') {
+ 	    const url = new URL(window.location);
+ 	    const urlParams = url.searchParams;
+ 	    localNo = urlParams.get('localNo');
+ 	    if(localNo == null) {
+ 	    	localNo = 1;
+ 	    }
+	}
+	getPlannerList(localNo, condition, 1);
+});
+
+function getPlannerList(localNo, condition, page) {
+	$.ajax({
+        url: 'getClickList.ma',
+        method: 'get',
+        data: { localNo: localNo, condition: condition },
+        dataType: 'json',
+        success: function(data) {
+        	
+        	localNoDiv.innerText = data.localNo;
+        	conDiv.innerText = data.condition;
+        	
+            const plannerListContainer = document.getElementsByClassName('plannerListContainer')[0];
+            plannerListContainer.innerHTML = '';
+            
+            const list = data.list;
+            list.forEach(planner => {
+                const table = document.createElement('table');
+                table.classList.add('plannerList', 'text-center', 'my-3');
+                
+                const row = document.createElement('tr');
+                
+                const memberNoCell = document.createElement('td');
+                memberNoCell.classList.add('d-none');
+                memberNoCell.innerText = planner.memberNo;
+                
+                const imageCell = document.createElement('td');
+                const img = document.createElement('img');
+                img.classList.add('rounded-circle', 'm-3');
+                img.width = 75;
+                img.height = 75;
+                img.alt = '프로필';
+                
+                if (planner.imageRename) {
+                    img.src = `https://drive.google.com/thumbnail?id=${planner.imageRename}`;
+                } else {
+                    img.src = 'image/noProfile.png';
+                }
+                imageCell.appendChild(img);
+                
+                const nicknameCell = document.createElement('td');
+                nicknameCell.classList.add('fs-4');
+                nicknameCell.width = 200;
+                nicknameCell.innerText = planner.nickname;
+                
+                const localNameCell = document.createElement('td');
+                localNameCell.width = 150;
+                localNameCell.innerText = planner.localName;
+                
+                const sIntroContentCell = document.createElement('td');
+                sIntroContentCell.style.width = '300px';
+
+                const sIntroDiv = document.createElement('div');
+                sIntroDiv.classList.add('sIntro');
+                sIntroDiv.innerText = planner.sIntroContent;
+                sIntroContentCell.appendChild(sIntroDiv);
+                
+                const starLikesReviewCell = document.createElement('td');
+                starLikesReviewCell.classList.add( 'text-start', 'px-5');
+                starLikesReviewCell.style.width = '200px';
+                
+                const star = data.star[planner.memberNo] ? data.star[planner.memberNo] : 0;
+                const starValue = star.toFixed(1);
+                const starText = `⭐ ${starValue}`;
+                const likesText = `❤️ ${data.likes[planner.memberNo]}`;
+
+                const reviewCount = data.rCount[planner.memberNo] ? data.rCount[planner.memberNo] : 0;
+                const reviewText = `📝 ${data.rCount[planner.memberNo]}`;
+                
+                starLikesReviewCell.innerHTML = `${likesText}<br/>${starText}<br/>${reviewText}`;
+                
+                row.appendChild(memberNoCell);
+                row.appendChild(imageCell);
+                row.appendChild(nicknameCell);
+                row.appendChild(localNameCell);
+                row.appendChild(sIntroContentCell);
+                row.appendChild(starLikesReviewCell);
+                
+                row.addEventListener('click', function() {
+                    const pNo = planner.memberNo;
+                    location.href = "selectPlanner.ma?pNo=" + pNo + "&page=" + 1;
+                });
+                
+                table.appendChild(row);
+                plannerListContainer.appendChild(table);
+            });
+            
+            // 페이지네이션
+			const pagination = document.querySelector('nav');
+			pagination.innerHTML = '';
+			
+			if (data.pi.listCount === 0) {
+			    plannerListContainer.innerHTML = '';
+			
+			    const spacer = document.createElement('div');
+			    spacer.style.height = '100px';
+			    plannerListContainer.appendChild(spacer);
+			
+			    const messageDiv = document.createElement('div');
+			    messageDiv.classList.add('d-flex', 'justify-content-center', 'm-3');
+			    messageDiv.style.height = '300px';
+			
+			    const message = document.createElement('h1');
+			    message.innerText = '등록된 플래너가 없습니다.';
+			
+			    messageDiv.appendChild(message);
+			    plannerListContainer.appendChild(messageDiv);
+			} else {
+			    const ul = document.createElement('ul');
+			    ul.className = 'pagination';
+			
+			    // 이전 버튼
+			    const prev = document.createElement('li');
+			    prev.className = 'prev page-item';
+			    const beforeBtn = document.createElement('a');
+			    beforeBtn.className = 'page-link';
+			    beforeBtn.innerHTML = "&laquo;";
+			    if (data.pi.currentPage == 1) {
+			        prev.classList.add('disabled');
+			        beforeBtn.setAttribute('aria-disabled', 'true');
+			    } 
+			    beforeBtn.addEventListener('click', function() {
+			    	localNoDiv.innerText = data.localNo;
+		        	conDiv.innerText = data.condition;
+		            getPlannerList(localNo, condition, data.pi.currentPage - 1);
+		            window.location.href = `matchingMain.ma?page=${data.pi.currentPage - 1}&localNo=${localNo}&condition=${condition}`;
+		        });
+			    
+			    
+			    prev.appendChild(beforeBtn);
+			    ul.appendChild(prev);
+			
+			    // 페이지 넘버링 버튼
+			    for (let i = data.pi.startPage; i <= data.pi.endPage; i++) {
+			        const li = document.createElement('li');
+			        li.className = 'page-item';
+			        const pageBtn = document.createElement('a');
+			        pageBtn.className = 'page-link';
+			        pageBtn.innerText = i;
+			        if (i == data.pi.currentPage) {
+			            pageBtn.style.fontWeight = "bold";
+			            pageBtn.style.fontSize = '1.1em';
+			            pageBtn.style.color = "#96caf0";
+			        }
+			        pageBtn.addEventListener('click', function() {
+			            getPlannerList(localNo, condition, i);
+			            window.location.href = `matchingMain.ma?page=${i}&localNo=${localNo}&condition=${condition}`;
+			        });
+			        
+			        li.appendChild(pageBtn);
+			        ul.appendChild(li);
+			    }
+			
+			    // 다음 버튼
+			    const next = document.createElement('li');
+			    next.className = 'next page-item';
+			    const afterBtn = document.createElement('a');
+			    afterBtn.className = 'page-link';
+			    afterBtn.innerHTML = "&raquo;";
+			    if (data.pi.currentPage == data.pi.maxPage) {
+			        next.classList.add('disabled');
+			    }
+			    afterBtn.addEventListener('click', function() {
+		            getPlannerList(localNo, condition, data.pi.currentPage + 1);
+		            window.location.href = `matchingMain.ma?page=${data.pi.currentPage + 1}&localNo=${localNo}&condition=${condition}`;
+		        });
+			    
+			    
+			    next.appendChild(afterBtn);
+			    ul.appendChild(next);
+			
+			    pagination.appendChild(ul);
+			}
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+
+</script>
+
+
+</html>

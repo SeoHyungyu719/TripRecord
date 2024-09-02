@@ -1,0 +1,275 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace='com.finalproject.triprecord.board.model.dao.BoardMapper'>
+	
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status = 'N' and board_type = #{boardType}
+	</select>
+	
+	
+	<select id="getBoardList" resultType="Board">
+		select *
+		from board
+			left join member on(board_writer_no = member_no)
+			left join general_bo on(board_no = general_no)
+		where board_status = 'N' and board_type = #{boardType}
+		order by board_no desc
+	</select>
+	
+	
+	<select id="getCategorySelectListCount" resultType="_int">
+		select count(*)
+		from board
+			left join member on(board_writer_no = member_no)
+			left join general_bo on(general_no = board_no)
+			left join local using(local_no)
+		where board_status = 'N' and board_type = #{boardType}
+		<if test="generalType != 'ALL'">
+			and general_type = #{generalType}
+		</if>
+		<if test="localName != 'ALL'">
+			and local_name = #{localName}
+		</if>
+		<if test="searchWord != ''">
+			and board_title like '%${searchWord}%'
+		</if>
+	</select>
+	
+	
+	<select id="getCategorySelectBoardList" resultType="Board">
+		select *
+		from board
+			left join member on(board_writer_no = member_no)
+			left join general_bo on(general_no = board_no)
+			left join local using(local_no)
+		where board_status = 'N' and board_type = #{boardType}
+		<if test="generalType != 'ALL'">
+			and general_type = #{generalType}
+		</if>
+		<if test="localName != 'ALL'">
+			and local_name = #{localName}
+		</if>
+		<if test="searchWord != ''">
+			and board_title like '%${searchWord}%'
+		</if>
+		order by board_no desc
+	</select>
+	
+	<select id="selectBoard" resultType="Board">
+		select *
+		from board
+			left join member on(board_writer_no = member_no)
+			left join general_bo on(general_no = board_no)
+			left join local using(local_no)
+		where board_status = 'N' and board_no = #{boardNo}
+		order by board_no desc
+	</select>
+	
+	<update id="updateCount">
+		update board
+		set board_count = board_count + 1
+		where board_no = #{boardNo}
+	</update>
+	
+	<select id="selectBoardNo" resultType="_int">
+		select seq_board.currval
+		from dual
+	</select>
+	
+	<select id="selectReply" resultType="Reply">
+		select *
+		from reply
+			left join board using(board_no)
+			left join member on(reply_writer_no = member_no)
+		where reply_status = 'N' and board_no = #{boardNo}
+		order by reply_no desc
+	</select>
+	
+	<insert id="insertBoard">
+		insert into board
+		values(seq_board.nextval, #{boardType}, #{boardWriterNo}, #{boardTitle}, #{boardContent}, sysdate, sysdate, default, default)
+	</insert>
+	
+	<insert id="insertGeneralBoard">
+		insert into general_bo
+		values(seq_board.currval, (select local_no from local where local_name = #{localName}), #{generalType})
+	</insert>
+	
+	<insert id="insertGeneralAsk">
+		insert into general_ask
+		values(seq_board.currval, #{generalType})
+	</insert>
+	
+	<insert id="insertQuestion">
+		insert into question
+		values(#{boardNo}, #{boardCount}, null, default)
+	</insert>
+	
+	<insert id="insertImage">
+		insert all
+		<foreach collection="list" item="item" separator=" ">
+			into image values(new_image_id, #{item.imagePath}, #{item.imageOriginName}, #{item.imageRename}, #{item.imageThum}, #{item.imageRefType}, #{item.imageRefNo})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<update id="deleteBoard">
+		update board
+		set board_status = 'Y'
+		where board_no = #{bNo}	
+	</update>
+	
+	<select id="selectImage" resultType="Image">
+		select *
+		from image
+		where image_ref_type = 'BOARD' and image_ref_no = #{boardNo}
+		order by image_no asc
+	</select>
+	
+	<insert id="insertReply">
+		insert into reply
+		values(seq_reply.nextval, #{boardNo}, #{replyWriterNo}, #{replyContent}, sysdate, sysdate, default)
+	</insert>
+	
+	<update id="deleteReply">
+		update reply
+		set reply_status = 'Y'
+		where reply_no = #{rNo}
+	</update>
+	
+	<update id="updateReply">
+		update reply
+		set reply_content = #{replyContent}, reply_modify_date = sysdate
+		where reply_no = #{replyNo}
+	</update>
+	
+	<select id="getQuestionList" resultType="Question">
+		select *
+		from question
+		<if test="i != 0">
+			where question_no = #{i}
+		</if>
+		<!-- i=0 : 문의 목록, i != 0 : 문의 상세 조회 -->
+	</select>
+	
+	<select id="getGeneralAsk" resultType="GeneralBoard">
+		select *
+		from general_ask
+	</select>
+	
+	<select id="getaskCategoryListCount" resultType="_int">
+		select count(*)
+		from board
+			left join member on(board_writer_no = member_no)
+			left join general_ask on(general_no = board_no)
+		where board_status = 'N' and board_type = #{boardType}
+		<if test="generalType != 'ALL'">
+			and general_type = #{generalType}
+		</if>
+		<if test="searchWord != ''">
+			and board_title like '%${searchWord}%'
+		</if>
+	</select>
+	
+	<select id="getCategorySelectQuestionList" resultType="Board">
+		select *
+		from board
+			left join member on(board_writer_no = member_no)
+			left join general_ask on(general_no = board_no)
+		where board_status = 'N' and board_type = #{boardType}
+		<if test="generalType != 'ALL'">
+			and general_type = #{generalType}
+		</if>
+		<if test="searchWord != ''">
+			and board_title like '%${searchWord}%'
+		</if>
+		order by board_no desc
+	</select>
+	
+	<select id="getNoticeListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status = 'N' and board_type = 'NOTICE'
+		and board_title like '%${searchWord}%'
+	</select>
+	
+	<select id="getNoticeSelect" resultType="Board">
+		select *
+		from board
+			left join member on(board_writer_no = member_no)
+		where board_status = 'N' and board_type = 'NOTICE'
+		and board_title like '%${searchWord}%'
+		order by board_no desc
+	</select>
+	
+	<select id="selectQuestion" resultType="Question">
+		select *
+		from question
+		where question_no = #{boardNo}
+	</select>
+	
+	<insert id="updateBoard">
+		update board
+		set board_title = #{boardTitle}, board_content = #{boardContent}, board_modify_date = sysdate
+		where board_no = #{boardNo}
+	</insert>
+	
+	<delete id="deleteImg">
+		delete from image
+		where image_rename = #{deleteImg}
+	</delete>
+	
+	<update id="updateQuestion">
+		update question
+		set question_pwd = #{boardTitle}
+		where question_no = #{boardNo}
+	</update>
+	
+	<delete id="deleteImages">
+		delete from image
+		where image_ref_type = 'BOARD' and image_ref_no = #{boardNo}
+	</delete>
+	
+	<select id="selectProfileImage" resultType="Image">
+		select * from image
+		where image_ref_type = 'MEMBER' and image_ref_no = #{i}
+	</select>
+	
+	<select id="selectAskBoard" resultType="string">
+		select general_type
+		from general_ask
+		where general_no = #{boardNo}
+	</select>
+	
+	<select id="countBoardList" resultType="_int">
+		select count(*)
+		from board
+		where board_writer_no = #{memberNo}
+	</select>
+	
+	<update id="firstBoardPoint">
+		update member
+		set member_point = member_point + 1000
+		where member_no = #{memberNo}
+	</update>
+	
+	<update id="updateGeneralAsk">
+		update general_ask
+		set general_type = #{generalType}
+		where general_no = #{boardNo}
+	</update>
+	
+	<select id="getProfileImageList" resultType="Image">
+		select *
+		from Image
+		where image_ref_type = 'MEMBER'
+	</select>
+	
+	<update id="updateGeneralBoard">
+		update general_bo
+		set local_no = #{localName}, general_type = #{generalType}
+		where general_no = #{boardNo}
+	</update>
+	
+</mapper>
