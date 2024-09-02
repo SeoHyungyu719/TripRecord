@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>'여기' 공지사항</title>
+<link type="text/css" href="css/service/noticeSelect.css" rel="stylesheet">
+<link rel="shortcut icon" href="image/icon_case.ico" type="image/x-icon"/>
+<link rel="icon" href="image/icon_case.ico" type="image/x-icon"/>
+<style>
+
+
+
+</style>
+</head>
+<body>
+	<div th:replace="~{ common/logoBar :: logoBar }"></div>
+	<div th:replace="~{ common/mainCategoryBar :: mainCategoryBar }"></div>
+
+	<div class="text-center" style="padding-top:60px;">
+		<b style="font-size:70px;">공지사항</b>
+	</div>
+	
+	<form id="search-form" action="noticeSearch.no" method="get">
+		<div id='content'>
+			<div id="content1-div" class="container">
+				<input id="search-com" type="text" name="searchWord" placeholder="제목으로 검색" th:value="${searchWord}">
+				<img class="x-icon" alt="" src="image/Search.png">
+			</div>
+		</div>
+		
+	
+		<!-- 왼쪽 사이드 바 -->
+		<div id="sidebar">
+			<div class="arrow" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+				<div class="arrow-top"></div>
+				<div class="arrow-bottom"></div>
+			</div>
+		<!-- > 모양 -->
+	
+			<div class="offcanvas offcanvas-start" data-bs-backdrop="false" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="staticBackdropLabel">고객센터</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<p>- 문의사항</p>
+					<p>- 공지사항</p>
+				</div>
+			</div>
+		</div>
+		<!-- 사이드 바 -->
+		<input type="hidden" name="boardType" value="NOTICE" id="general">
+		<input type="hidden" name="generalType" value="ALL">
+	</form>
+	
+	
+	
+	
+	<div id='content2'>
+		<div class="text-center" style="padding:30px;">
+			<b style="font-size:40px;">[[${n.boardTitle}]]</b>
+		</div>
+		<div class='row' style="padding:30px; border-bottom:5px solid #96caf0;">
+			<div class="col-2">
+				[[${n.boardModifyDate}]]
+			</div>
+			<div class="col-2">조회수 : [[${n.boardCount}]]</div>
+			<div class="col-6"></div>
+			<div class="col-2">관리자</div>
+		</div>
+		<div class='text-start' id='placeContent'>
+			<p style="white-space:pre-wrap;">[[${n.boardContent}]]</p>
+		</div>
+		
+	</div>
+	<input type="hidden" th:value="${n.boardNo}">
+	<div class="text-center">
+		<div class="col-4"></div>
+		<div class="col-1" style="margin:auto;"></div>
+		<div class="col-1" style="margin:auto;">
+			<a href="notice.no">
+				<button class="edit-btn">목록</button>
+			</a>
+		</div>
+		<div class="col-1" style="margin:auto;"></div>
+		<div class="col-4"></div>
+	</div>
+	
+	
+	
+	
+	
+
+		
+        <br>
+		
+
+	
+	
+		<div th:replace="~{ common/footer.html :: footer }"></div>
+	
+	
+	<script>
+		window.onload=()=>{
+			const sideMenus = document.getElementsByClassName('offcanvas-body')[0].children;
+			for(const sideP of sideMenus){
+				sideP.addEventListener('mouseover',function(){
+					sideP.style.fontSize = 'large';
+					sideP.style.textDecoration = 'underline';
+				});
+			}
+			for(const sideP of sideMenus){
+				sideP.addEventListener('mouseout',function(){
+					sideP.style.fontSize = 'medium';
+					sideP.style.textDecoration = 'none';
+				});
+			}
+			for(const sideP of sideMenus){
+				sideP.addEventListener('click',function(){
+					if(this.innerText.split(' ')[1] == "문의사항"){
+						location.href="ask.no";
+					} else{
+						location.href="notice.no";
+					}
+				});
+			}
+			
+			
+			
+			const searchForm = document.getElementById("search-form");
+			// 돋보기 클릭 시 검색
+			document.getElementsByClassName("x-icon")[0].addEventListener('click',()=>{
+				searchForm.submit();
+			});
+		}
+	</script>
+	
+	
+	
+</body>
+</html>

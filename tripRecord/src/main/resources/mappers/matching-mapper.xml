@@ -1,0 +1,226 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace='com.finalproject.triprecord.matching.model.dao.MatchingMapper'>
+
+	<select id="getPlannerListCount" resultType="_int">
+		select count(*)
+		from planner
+		join member using(member_no)
+		where status = 'Y'
+        <if test="localNo != '0' and localNo !=null">
+			and local_No = #{localNo}
+		</if>
+	</select>
+
+	<select id="getPlannerList" resultType="Planner">
+		SELECT *
+		FROM planner 
+		JOIN member on planner.member_no = member.member_no
+		JOIN local using (local_No)
+		LEFT JOIN image ON image.image_ref_no = planner.member_no AND image_ref_type = 'MEMBER'
+		<if test="condition != null and condition == 1">
+		LEFT JOIN (
+			SELECT planner_no, COUNT(*) AS countlikes
+		    FROM planner_like
+		    GROUP BY planner_no
+		) likes ON likes.planner_no = planner.member_no
+		</if>
+		<if test="condition != null and condition == 2">
+		LEFT JOIN (
+		    SELECT rev_ref_no AS planner_no, AVG(review_star) AS avgstar
+		    FROM review
+		    WHERE review_status = 'Y'
+		    GROUP BY rev_ref_no
+		) review_avg ON review_avg.planner_no = planner.member_no
+		</if>
+		<if test="condition != null and condition == 3">
+		LEFT JOIN (
+		    SELECT rev_ref_no AS planner_no, COUNT(*) AS reviewCount
+		    FROM review
+		    WHERE review_status = 'Y'
+		    GROUP BY rev_ref_no
+		) reviewCounts ON reviewCounts.planner_no = planner.member_no
+		</if>
+		where local_no = #{localNo}
+		<if test="condition != null and condition == 1">order by countlikes desc</if>
+		<if test="condition != null and condition == 2">order by Avgstar desc nulls last</if>
+		<if test="condition != null and condition == 3">order by reviewCount desc nulls last</if>
+		<if test="condition == null">order by member.member_No desc</if>
+	</select>
+	
+	<select id="countLikes" resultType="_int">
+		select count(*)
+		from planner_like
+		where planner_no = #{ pNo }
+	</select>
+	
+	<select id="checkLikes" resultType="_int">
+		select count(*)
+		from planner_like
+		where planner_no = #{ pNo } and member_no = #{ loginUserNo }
+	</select>
+	
+	<insert id="insertLikes">
+		insert into planner_like
+		values (seq_likes.nextval, #{ pNo }, #{ loginUserNo })
+	</insert >
+	
+	<delete id="deleteLikes">
+		delete from planner_like
+		where planner_no = #{ pNo } and member_no = #{ loginUserNo }
+	</delete>
+	
+	<select id="selectLocalList" resultType="Local">
+		select *
+		from local
+		left join image on image_ref_no = local_no and image_ref_type = 'LOCAL'
+	</select>
+	
+	<select id="selectPlanner" resultType="Planner">
+		select *
+		from planner
+		join member using(member_no)
+		JOIN local using (local_No)
+		left join image on image_ref_no = member_no and image_ref_type = 'MEMBER'
+		where member_no = #{pNo}
+	</select>
+	
+	<select id="AverageStar" resultType="_double">
+		select round(avg(review_star), 1)
+		from review
+		where rev_ref_type = 'PLANNER' and review_status='Y' and rev_ref_no = #{ pNo }
+	</select>
+	
+	<select id="getReviewListCount" resultType="_int">
+		select count (*)
+		from review
+		where rev_ref_type = 'PLANNER' and review_status='Y' and rev_ref_no = #{ pNo }
+	</select>
+	
+	<select id="getReviewList" resultType="Review">
+		select *
+		from review
+		join member using(member_no)
+		left join image on image_ref_no = member_no and image_ref_type = 'MEMBER'
+		where rev_ref_type = 'PLANNER' and review_status='Y' and rev_ref_no = #{ pNo }
+		order by review_no desc
+	</select>
+	
+	<insert id="insertReview" useGeneratedKeys="true">
+		<selectKey keyProperty="reviewNo" order="BEFORE" resultType="_int">
+			select seq_review.nextval from dual
+		</selectKey>
+		insert into review
+		values(#{reviewNo}, #{memberNo}, #{reviewTitle}, #{reviewContent}, #{reviewStar}, #{revRefType}, #{revRefNo}, default, #{reqRefNo})
+	</insert>
+	
+	<insert id="insertImage">
+		insert *
+		<foreach collection="list" item="item" separator=" ">
+			into image values(new_image_id, #{item.imagePath}, #{item.imageOriginName}, #{item.imageRename}, #{item.imageThum}, #{item.imageRefType}, #{item.imageRefNo})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<select id="selectrImgList">
+		select *
+		from image
+		where image_Ref_type = 'REVIEW'
+		<if test="rId != null">
+			and image_ref_no = #{ rId }
+		</if>
+	</select>
+	
+	<select id="selectiImgList">
+		select *
+		from image
+		where image_Ref_type = 'PLANNER'
+		and image_ref_no = #{ pNo }
+	</select>
+	
+	<select id="selectReview" resultType="Review">
+		select *
+		from review
+		where review_No = #{rNo}
+	</select>
+	
+	<update id="deletePlannerReview">
+		update review
+		set review_status = 'N'
+		where review_no = #{rNo} and rev_ref_type = 'PLANNER'
+	</update>
+	
+	<delete id="deleteReviewImage">
+		delete from Image
+		where Image_rename in
+		<foreach collection="list" item="i" open="(" separator="," close=")">
+			#{i}
+		</foreach>
+	</delete>
+	
+	<insert id="insertReviewImage">
+		insert all
+		<foreach collection="list" item="item" separator=" ">
+			into image values(new_image_id, #{item.imagePath}, #{item.imageOriginName}, #{item.imageRename}, #{item.imageThum}, #{item.imageRefType}, #{item.imageRefNo})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<insert id="insertSchedule" useGeneratedKeys="true">
+		<selectKey keyProperty="scNo" order="BEFORE" resultType="_int">
+			select seq_schedule.nextval from dual
+		</selectKey>
+		insert into schedule
+		values(#{scNo}, #{scLocalNo}, #{writerNo}, #{startDate}, #{endDate}, default, default)
+	</insert>
+	
+	<insert id="insertReqSchedule" useGeneratedKeys="true">
+		<selectKey keyProperty="reqNo" order="BEFORE" resultType="_int">
+			select seq_req.nextval from dual
+		</selectKey>
+		insert into req_schedule
+		values(#{reqNo}, #{reqMemNo}, #{reqPlaNo}, #{scheNo}, #{reqRef}, default, null, null, #{payPoint})
+	</insert>
+	
+	<select id="topPlannerList" resultType="Planner">
+		<![CDATA[
+		select *
+		from(select *
+			 from (select planner.member_no, nickname, image.image_rename, local.local_name, count(*) likes
+		           from planner
+		     			join planner_like on (planner_like.planner_no = planner.member_no)
+		           		join member on (planner.member_no = member.member_no)
+		           		join local on (planner.local_no = local.local_no)
+                        left join image on (planner.member_no = image.image_ref_no) and image.image_ref_type = 'MEMBER'
+		       	   where status = 'Y'
+		           group by planner.member_no, member.nickname, image.image_rename, local.local_name)
+		    order by likes desc)
+		where rownum <= 5
+		]]>
+	</select>
+	
+	<select id="selectTagList" resultType="Hashtag">
+		select *
+		from select_hashtag
+			join hashtag using (tag_no)
+		where tag_ref_type = 'PLANNER' and tag_ref_no = #{ pNo }
+	</select>
+	
+	<select id="checkPoint" resultType="_int">
+		select count(*)
+		from member
+		where member_No = #{loginUserNo} and member_Point <![CDATA[>=]]> #{payPoint}
+	</select>
+	
+	<update id="requestPayment">
+		update member
+		set member_point = member_point - #{ payPoint }
+		where member_no = #{ loginUserNo }
+	</update>
+	
+	<select id="requestCount" resultType="_int">
+		select count(*)
+		from req_schedule
+		where req_mem_no = #{loginUserNo}
+	</select>
+	
+</mapper>

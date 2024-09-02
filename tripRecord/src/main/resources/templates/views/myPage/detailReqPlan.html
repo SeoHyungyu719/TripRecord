@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="icon" href="image/icon_case.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="image/icon_case.ico" type="image/x-icon"/>
+<link type="text/css" href="css/myPage/detailReqPlan.css" rel="stylesheet">
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<meta charset="UTF-8">
+<title>플래너와 함께 여행 계획 짜기</title>
+</head>
+<body>
+	<!-- 헤더 -->
+	<div th:replace="~{common/logoBar :: logoBar }"></div>
+	<div th:replace="~{common/mainCategoryBar :: mainCategoryBar}"></div>
+	<!--마이페이지 어퍼바-->
+	<div th:replace="~{common/myPageUpperBar :: myPageUpperBar}"></div>
+	<!-- 사이드바 -->
+	<div style="height: 120px;">
+		<div id="sidebar">
+			<div th:replace="~{common/myPlanSideBar :: myPlanSideBar}"></div>
+		</div>
+	</div>
+	
+	
+	<div class="flex-container" id='firstDiv'>
+		<span class="secondSidebar"><a class="nav-link"
+				href="myPlan.mp">여행 플랜 신청 리스트</a></span> <span class="secondSidebar"><a
+				class="nav-link" href="myTripNote.mp">내 여행 노트</a></span>
+		<form id='reqForm'>
+			<!-- 여행지 참고 사항 출력창 -->
+			<div id='schContent'>
+				<!-- 여행지 -->
+				<div id='planTitle'>
+					<input type='hidden' name='reqNo' th:value='${rs.reqNo}'>
+					<input type='hidden' name='reqStatus' value='3'>
+					<input type='hidden' name='scheNo' th:value='${rs.scheNo}'>
+					<input type='hidden' name='page' th:value='${page}'>
+					<input type='hidden' name='payPoint' id='point' th:value='${rs.payPoint}'>
+					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16" id='localIcon'>
+						<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+					</svg>
+					&nbsp;<b>[[${planner.localName}]]</b>로 떠나는 <b>"[[${rs.startDay}]] ~ [[${rs.endDay}]]"</b>([[${rs.nightDay}]]) 여행입니다
+				</div>
+				<hr>
+				<div id='infoReq'>
+					※ 일정 도착 후 확인을 한 경우 환불이 불가합니다&nbsp;&nbsp;※ 구매 확정시에만 내 여행 노트에서 일정을 확인 및 수정이 가능합니다&nbsp;&nbsp;※ 여행 시작일자가 지날 경우 자동으로 구매확정 됩니다
+				</div>
+				<hr>
+				<!-- 참고사항 입력한거 -->
+				<div id="note"  style="white-space:pre-wrap;">
+					<b>참고사항(선택) : </b>[[${rs.reqRef}]]
+				</div>
+				
+			</div>
+			<!-- 플래너 및 여행 일정 -->
+			<div id='planSch'>
+				
+				<div id='planner'>
+					<input type='hidden' name='plaNo' th:value='${planner.memberNo}'>
+					<div id='plannerImgDiv'>
+						<img id='plannerImg' th:if='${planner.imageRename == null}' src="image/noProfile.png"/>
+						<img id='plannerImg' th:if='${planner.imageRename != null}' th:src="|https://drive.google.com/thumbnail?id=${planner.imageRename}&sz=w1000|"/>
+					</div>
+					<span id='plaNickname'>
+						[[${planner.nickname}]]
+					</span>
+					<span id='toolTip'>
+						&nbsp;플래너 프로필 보기&nbsp;
+					</span>
+				</div>
+				<hr>
+				<!-- 일정 -->
+				
+				<div id='schedule' th:if='${rs.reqStatus == 1}' style='text-align:center;'>
+					플래너가 아직 일정을 생성하지 않았어요<br>
+					조금만 기다려주시면 멋진 여행 계획을 세워드릴게요&#128521;
+				</div>
+				<div id='rearSchedule' th:if='${rs.reqStatus == 2 && pList != null}'>
+					<div class="contain-div">
+						<div id="planAll" class="grid">
+							<div class="dayPlan g-col-6 g-col-md-4" th:each="date : ${dates}">
+								<div class="dayText" th:text="|${date.key}일차|"></div>
+								<div class="date" th:text="${date.value}"></div>
+								<div class="planDiv">
+									<div class="one-plan" th:each="p: ${pList}" th:if="${date.value == p.day}">
+										<div class="plan-spans">
+											<span class="line"><span class="round"></span></span>
+										</div>
+										<div class="plan-labels">
+											<div class="label-div">
+												<label class="planLabel placeLabel" th:text=${p.place}></label>
+											</div>
+											<div class="label-div">
+												<label class="planLabel timeLabel" th:text="${p.time}"></label>
+											</div>
+											<div class="label-div">
+												<label class="planLabel memoLabel" th:text="${p.memo}"></label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div th:if='${rs.memo != null}' style='margin-top: 20px;'>
+						<b>플래너가 주는 추가 정보&#128221;</b>
+						<div style='white-space:pre-wrap;'>
+[[${rs.memo}]]
+						</div>
+					</div>
+				</div>
+				<div id='schedule' th:if='${rs.reqStatus == 3}'>
+					구매 확정이 완료되었습니다. "마이페이지 ➜ 내 여행 노트"에서 상세 일정을 확인하실 수 있습니다. 
+				</div>
+				<div id='schedule' th:if='${rs.reqStatus == 4}'>
+					신청이 취소된 여행입니다 :(
+					<hr>
+					<div id='cancelComent'>
+						<b>취소 사유 : </b>
+						<th:block th:if='${cancel.cancelComent == null}'>사유가 등록되어있지않습니다.</th:block>
+						<th:block th:if='${cancel.cancelComent != null}'>[[${cancel.cancelComent}]]</th:block>
+					</div>
+				</div>
+			</div>
+			<!-- 버튼 -->
+			<div id='buttonDiv'>
+				<input type='hidden' th:value='${rCount}' id='rCount'>
+				<button type='button' th:if='${rs.reqStatus == 2}' id="submit_button">구매확정</button>
+				<button type='button' th:if='${rs.reqStatus == 1}' id="cancle_button">신청 취소</button>
+				<button type='button' th:if='${rs.reqStatus == 3 || rs.reqStatus == 4}' id="review_button" onclick="review()">후기 작성</button>
+				<button type='button' id="back_button" onclick="back()">뒤로 가기</button>
+			</div>
+			
+		</form>
+	</div>
+	<!-- 확정 모달 -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="modalSubmit">
+		<div class="modal-dialog" role="document">
+    		<div class="modal-content rounded-3 shadow">
+      			<div class="modal-body p-4 text-center">
+        			<h3 class="mb-0">플래너에게 받은 일정을 구매 확정 하시겠습니까?</h3>
+        			<p class="mb-0">확정 후 여행 계획은 마이페이지 &gt; 내 여행 노트에서 확인이 가능합니다.<br>※확정 후 환불은 문의사항 게시판을 이용해주세요※</p>
+      			</div>
+      			<div class="modal-footer flex-nowrap p-0">
+        			<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" id="confim">
+        				<strong>네</strong>
+        			</button>
+        			<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">아니오</button>
+      			</div>
+    		</div>
+ 			</div>
+	</div>
+	<!-- 확정 모달 -->
+	<!-- 신청취소 모달 -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="modalChoice">
+		<div class="modal-dialog" role="document">
+    		<div class="modal-content rounded-3 shadow">
+      			<div class="modal-body p-4 text-center">
+        			<h3 class="mb-0">정말로 신청을 취소하시겠습니까?</h3>
+        			<p class="mb-0">
+        				취소 후 신청내역은 복구할 수 없습니다
+        				<br>
+        				필요시 재신청 해주세요 (환불 예정 포인트 : [[${rs.payPoint}]])
+        			</p>
+        			 <form id='cancelForm'>
+			        	<input type='hidden' name='reqNo' th:value='${rs.reqNo}'>
+			        	<input type='hidden' name='reqStatus' id='reqStatus' value='4'>
+			        	<input type='hidden' name='page' id='page' th:value='${page}'>
+			        	<input type='hidden' name='payPoint' id='payPoint' th:value='${rs.payPoint}'>
+			          <div class="mb-3">
+			            <label for="message-text" class="col-form-label">취소 사유 :</label>
+			            <textarea class="form-control" id="message-text" name='cancelContent'></textarea>
+			          </div>
+			        </form>
+      			</div>
+      			<div class="modal-footer flex-nowrap p-0">
+        			<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" id="delete">
+        				<strong>취소 하기</strong>
+        			</button>
+        			<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">아니오</button>
+      			</div>
+    		</div>
+ 		</div>
+	</div>
+	<!-- 신청취소 모달 -->
+	
+	<!-- 후기 있을 때 모달 -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="modalReview">
+		<div class="modal-dialog" role="document">
+    		<div class="modal-content rounded-3 shadow">
+      			<div class="modal-body p-4 text-center">
+        			<h3 class="mb-0">이미 후기를 작성한 신청 내역입니다</h3>
+        			<p class="mb-0">※후기는 신청당 한번만 작성하실 수 있습니다.※</p>
+      			</div>
+      			<div class="modal-footer flex-nowrap p-0">
+        			<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" id="goReviewList">
+        				<strong>내 후기 보러가기</strong>
+        			</button>
+        			<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">아니오</button>
+      			</div>
+    		</div>
+ 			</div>
+	</div>
+	<!-- 후기 있을 때 모달 -->
+	
+	<!-- 푸터 -->
+	<div th:replace="~{common/footer :: footer}" ></div>
+	
+	<script th:inline='javascript'>
+		
+		const reqForm = document.getElementById('reqForm');
+			
+		//확정 시 모달
+		const subBtn = document.getElementById('submit_button');
+		if(subBtn != null){
+			subBtn.addEventListener('click', ()=>{
+	        	$('#modalSubmit').modal('show');
+			})
+		}
+		
+		// 확정
+       const confim = document.getElementById('confim');
+        if(confim != null){
+        	confim.addEventListener('click', ()=>{
+        		const status = document.getElementById('reqStatus');
+				status.value = '2';
+				reqForm.action = "reqConfirm.mp";
+				reqForm.submit();
+        	})
+        }
+		
+		//신청 취소 시 모달
+		const canBtn = document.getElementById('cancle_button');
+		if(canBtn != null){
+			canBtn.addEventListener('click', ()=>{
+	        	$('#modalChoice').modal('show');
+			})
+		}
+		
+		// 신청 취소
+		const cancelForm = document.getElementById('cancelForm')
+       const del = document.getElementById('delete');
+        if(del != null){
+        	del.addEventListener('click', ()=>{
+				cancelForm.action = "cancelReqSch.mp";
+				cancelForm.submit();
+        	})
+        }
+		
+		
+		//뒤로 가기
+		function back(){
+			location.href="myPlan.mp?page=" + /*[[${page}]]*/1;
+		}
+		
+		// 플래너 리뷰 쓰러가기
+		function review(){
+			const rCount = document.getElementById('rCount').value;
+			if(rCount == 0){
+				const plaNo = document.getElementsByName('plaNo')[0].value;
+				const reqNo = document.getElementsByName('reqNo')[0].value;
+				location.href="matchingReview.ma?pNo=" + plaNo + "&reqNo=" + reqNo;
+			}else{
+		        $('#modalReview').modal('show');
+			}
+		}
+		
+		const goReviewList = document.getElementById('goReviewList');
+		if(goReviewList != null){
+			goReviewList.addEventListener('click', ()=>{
+				location.href = "myPlannerReview.mp"
+			})
+		}
+		
+		// 플래너 프로필 이동
+		const planner = document.getElementById('planner');
+		for(const chi of planner.children){
+			chi.addEventListener('click', function(){
+				location.href = 'selectPlanner.ma?page=1&pNo=' + planner.children[0].value;
+			})
+		}
+		
+		const rearSchedule = document.getElementById('rearSchedule');
+		const dayPlan = document.getElementsByClassName("dayPlan");
+		if(rearSchedule != null){
+			const firstDiv = document.getElementById('firstDiv');
+			if(dayPlan.length > 0){
+				firstDiv.classList.add('marginDiv1');
+			}
+		}
+		
+	</script>
+</body>
+</html>

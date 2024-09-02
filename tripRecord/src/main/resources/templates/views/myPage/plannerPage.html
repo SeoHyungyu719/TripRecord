@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<title>플래너페이지</title>
+<link type="text/css" href="css/myPage/plannerPage.css" rel="stylesheet">
+<link rel="icon" href="image/icon_case.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="image/icon_case.ico" type="image/x-icon"/>
+</head>
+<body>
+	<!-- 헤더 -->
+	<div th:replace="~{common/logoBar :: logoBar }"></div>
+	<div th:replace="~{common/mainCategoryBar :: mainCategoryBar}"></div>
+	<!-- 플래너페이지 어퍼바 -->
+	<div th:replace="~{common/plannerUpperBar :: plannerUpperBar}"></div>
+	<div class="container-fluid justify-content-center" style="width: 1400px">
+		<div class="d-flex justify-content-between align-items-center">   
+	        <div class="fs-2 my-3 ms-5">
+	           <button id="submitAdmin" style="font-size:20px; border:none; background:white;">일반회원 전환 요청하기</button>
+	        </div>
+	        <div>
+	           <div style="height:20px;"></div>
+	           <button class="btn btn-secondary me-5" id="revision_button" onclick="location.href='updatePlanner.mp'"><span>수정</span></button>
+	        </div>
+	    </div>
+	</div>
+	
+	
+	
+	<div id="mainContainer" class="container-fluid justify-content-center">
+		<div class="d-flex justify-content-between align-items-center">	
+			<div class="fs-2 my-3 ms-5">플래너 매칭화면 미리보기</div>
+		</div>
+		<!-- 상단 정보 탭 전체 -->
+		<div class="d-flex justify-content-center px-3 m-3">
+			<!-- 플래너 정보 -->
+			<div id="plannerInfo" class="m-3">
+				<div class="d-flex justify-content-center align-items-center shadow border bg-light rounded-3">
+					<div class="d-flex justify-content-center p-3" th:if="${planner.imageRename != null}">
+						<img id="ProfileImg" class="rounded-circle mx-3" style="object-fit: cover;" th:src="|https://drive.google.com/thumbnail?id=${planner.imageRename}&sz=w1000|" width="150px" height="150px"/>
+					</div>
+					<div class="d-flex justify-content-center p-3" th:if="${planner.imageRename == null}">
+						<img class="rounded-circle mx-3" src="image/noProfile.png" width="150px" height="150px"/>
+					</div>
+					<div class="p-3">
+						<div class="mx-3 fs-1">[[${planner.Nickname}]] 플래너</div>
+						<div class="sIntro mx-3 mt-2" style="width: 400px">[[${planner.sIntroContent}]]</div>
+						<div class="mx-3">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+								<path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+								<path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+							</svg> [[${planner.localName}]]
+						</div>
+						<div class="mx-3 mt-2">
+							<button id="likeButton" class="btn btn-outline-danger" th:classappend="${checkLikes != 0} ? 'active' : ''">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+									<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+								</svg>
+								좋아요 <span id="likeCount">[[${likes}]]</span>
+							</button>
+						</div>
+						<div class="mx-3 mt-2">
+							<th:block th:each="t : ${tagList}" th:text="'#'+${t.tagName} +'&nbsp;&nbsp;'"></th:block>
+						</div>
+					</div>
+				</div>
+			</div> 
+			<div id="RequestForm" class="p-3">
+				<div class="requestContainer d-inline-block text-center shadow border bg-light rounded-3">
+					<h3 class="d-inline-block m-3">플래너에게 지금 일정을<br/>
+												   요청해보세요</h3><br/>
+					<form action="matchingRequest.ma">
+						<button class="btn m-3" type="button" id="request">일정 신청</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 가로줄 -->
+		<div class="d-flex justify-content-center">
+			<hr class="border border-secondary border-1 opacity-75 w-100"/>
+		</div>
+		
+		<div id="reviewSumTab" class="d-flex justify-content-center">
+			<div class="container border bg-light rounded-3 m-3 w-75" >
+				<h2 class="m-5 text-center"> [[${pi.listCount}]] 개의 후기 | ⭐ [[${AvgStar}]]</h2>
+			</div>
+		</div>
+		
+		<!-- 가로줄 -->
+		<div class="d-flex justify-content-center">
+			<hr class="border border-secondary border-1 opacity-75 w-100"/>
+		</div>
+		
+		
+		<div id="content" class="d-flex justify-content-center my-3">
+			<div class="d-flex flex-column border bg-light  rounded-3 w-75" >
+				<div class="d-flex justify-content-center">
+					<div class="m-5 w-100" th:if="${ plannerIntroImage != 'noImg'}">
+						<img class="w-100" width="800px" th:src="|https://drive.google.com/thumbnail?id=${ plannerIntroImage }&sz=w1000|"/><br/>
+					</div>
+				</div>
+				<div class="m-5">
+					<p style="white-space:pre-wrap;">[[${planner.introContent}]]</p>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 가로줄 -->
+		<div class="d-flex justify-content-center">
+			<hr class="border border-secondary border-1 opacity-75 w-100"/>
+		</div>
+		
+		
+		<!-- 후기 -->
+		<div class="d-flex text-start mb-3 fs-3">[[${pi.listCount}]]개의 후기 (⭐ [[${AvgStar}]])</div>
+		<div class="d-flex justify-content-center my-3">
+			<div class="d-flex flex-column w-75">
+				<div class="list-group w-100" th:each="r : ${ rList }">
+					<form id="reviewForm" method="post">
+						<table class="reviewTable fs-3 text-center bg-light">
+							<tr>
+								<td>
+									<input type="hidden" name="pNo" th:value="${planner.MemberNo}">
+									<input type="hidden" name="rNo" th:value="${r.reviewNo}">
+								</td>
+								<td th:if="${r.imageRename != null }">
+									<img class="rounded-circle m-3" th:src="|https://drive.google.com/thumbnail?id=${r.imageRename}&sz=w1000|" width="75px" height="75px">
+								</td>
+								<td th:if="${r.imageRename == null }">
+		         					<img class="rounded-circle m-3" src="image/noProfile.png"  width="75px" height="75px" alt="프로필">
+		         				</td>
+								<td width="250px">[[${r.nickname}]]</td>
+								<td class="star text-start" width="200px">
+									<th:block class="d-block" th:each="num : ${#numbers.sequence(1,r.reviewStar)}">⭐</th:block>
+								</td>
+								<td class="fs-5" width="500px">[[${r.reviewTitle}]]</td>
+								<td style="display: none;">[[${r.reviewContent}]]</td>
+								<td width="100px">
+								
+								<div class="dropend" th:if="${ session.loginUser != null && r.MemberNo eq session.loginUser.MemberNo }">
+									<a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id='drop'>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+											<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+										</svg>
+									</a>
+								</div>
+								</td>
+							</tr>
+						</table>
+					</form><br/>
+				</div>
+			</div>
+		</div>
+		<th:block th:if="${pi.listCount != 0}">
+			<nav class="d-flex justify-content-center">
+	        	<ul class="pagination" th:with="loc=${ loc }">
+	        		 <!-- 이전 버튼 -->
+		            <li class="page-item">
+		            	<a class="page-link" th:classappend="${pi.currentPage == 1} ? 'disabled'" aria-label="Previous" style='color:black;'>
+		            		<span aria-hidden="true">&laquo;</span>
+		              	</a>
+		            </li>
+		            
+		             <!-- 페이지 넘버링 버튼  -->
+		            	
+					<li class="page-item" th:each="p : ${ #numbers.sequence(pi.startPage, pi.endPage) }">
+						<a th:style="${ pi.currentPage == p } ? 'font-weight:bold; font-size:1.1em; color:#96caf0;' : 'color:black;'" class="page-link">[[${ p }]]</a>
+					</li>
+		           
+		             <!-- 다음 버튼  -->
+		            <li class="page-item">
+		            	<a class="page-link" th:classappend="${pi.currentPage == pi.endPage} ? 'disabled'" aria-label="Next" style='color:black;'>
+		            		<span aria-hidden="true">&raquo;</span>
+		            	</a>
+		            </li>
+		    	</ul>
+	        </nav>
+		</th:block>
+		<th:block th:if="${pi.listCount == 0}">
+			<div class="emptyReview d-flex justify-content-center">
+				<h2>등록된 후기가 없습니다.</h2>
+			</div>
+		</th:block>
+	</div>
+	
+	<!-- 취소 사유 모달창 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="reviewModal">
+		<div class="modal-dialog d-flex align-items-center justify-content-center">
+    		<div class="modal-content rounded-3 shadow">
+      			<div class="modal-body p-4">
+        			<h3 class="mb-3 text-start">취소 사유</h3>
+	        			<hr/>
+	        			<textarea style="width:100%; height:100px; resize:none;" id="cancelReasonText"></textarea>
+                	<br/>
+      			</div>
+      			<button type="button" class="btn btn-lg btn-light w-80 m-3" data-bs-dismiss="modal"  onclick="submitAdmin()">요청</button>
+      			<button type="button" class="btn btn-lg btn-light w-80 m-3" data-bs-dismiss="modal">닫기</button>
+    		</div>
+  		</div>
+	</div>
+	
+	<!-- 푸터 -->
+	<div th:replace="~{common/footer :: footer}" ></div>
+	
+	<script th:inline="javascript">
+	let cancelReason = null;
+		function submitAdmin(){
+			if(cancelReason.length == 0){
+				alert('사유를 입력하세요')
+			}else{
+				alert('요청 승인 시 판매자 권한을 잃게됩니다')
+				$.ajax({
+					type:"post",
+					url:"cancelPlanner.mp",
+					data:{grade:"PLANNER_CANCEL", cancelReason : cancelReason},
+					success:(data)=>{
+						if(data == 'PLANNER_CANCEL'){
+							alert('현재 요청된 상태입니다')
+						} else {
+							alert("요청이 완료되었습니다")
+						}
+					},
+					error:(data)=>{
+						console.log(data)
+						alert('오류 발생')
+					}
+				})
+				
+			}
+		}
+			
+		// 미리보기 경고
+		function previewAlert(){
+			alert('미리보기 페이지에서는 불가능합니다.')
+		}
+		
+		const likeButton = document.getElementById('likeButton');
+		const requestButton = document.getElementById('request');
+		const reviewList = document.querySelectorAll('tr');
+		const pagination = document.getElementsByClassName('page-item');
+		
+		likeButton.addEventListener('click', previewAlert);
+		requestButton.addEventListener('click', previewAlert);
+		for(const tr of reviewList) {
+			tr.addEventListener('click', previewAlert);
+		}
+		for(const li of pagination) {
+			li.addEventListener('click', previewAlert);
+		}
+		
+		document.getElementById('cancelReasonText').addEventListener('change', function(){
+			cancelReason = document.getElementById('cancelReasonText').value
+		})	
+		
+		const submitBtn = document.getElementById('submitAdmin')
+		submitBtn.addEventListener('click',function(){
+			if(confirm("일반회원 요청을 하시겠습니까")){
+				$('#reviewModal').modal('show');
+				cancelReason = document.getElementById('cancelReasonText').value
+				
+			}else{
+				return false;
+			}
+		})
+	</script>
+</body>
+</html>
