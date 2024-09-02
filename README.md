@@ -25,7 +25,7 @@
 <h3 align="center">>BackEnd</h3>
   <div align="center">
     <img src="https://img.shields.io/badge/java 17-4B4B77?style=flat-square" height="25">
-    <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white" height="25">
+    <img src="https://img.shields.io/badge/oracle sql-4479A1?style=for-the-badge&logo=mysql&logoColor=white" height="25">
   </div>
 <h3 align="center">>FrameWork/Library</h3>
   <div align="center">
