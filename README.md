@@ -153,7 +153,52 @@
 <h1>3. ERD 설계도</h1>
 <h3>>>ERD 바로가기 : https://www.erdcloud.com/d/RgkFD5yupCSJWcuzM</h3>
 <img src="https://github.com/user-attachments/assets/9d2ca369-5d39-48c7-a5d0-6ad5bea8c12c">
-
+<h1>4.맡은 기능</h1>
+  <table align="center">
+  <tbody>
+    <tr>
+      <td align="center">기능</td>
+      <td align="center">설명</td>
+      <td align="center">비고</td>
+    </tr>
+    <tr>
+      <td>회원정보 수정</td>
+      <td></td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>내 게시글 관리</td>
+      <td></td>
+      <t
+      </td>
+    </tr>
+    <tr>
+      <td>프로필 사진 기능</td>
+      <td></td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>포인트 결제 및 환불</td>
+      <td></td>
+      <td>
+      </td>
+    </tr>   
+     <tr>
+      <td>플래너 프로필 수정</td>
+      <td></td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>구매확정 내역 조회</td>
+      <td></td>
+      <td>
+      </td>
+    </tr>       
+  </tbody>
+</table> 
 
 
 
