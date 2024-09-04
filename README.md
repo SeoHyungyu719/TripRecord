@@ -53,7 +53,17 @@
     <img src="https://img.shields.io/badge/erdcloud-000000?style=flat-square" height="25">
   </div>
 <hr/>
-
+<h1>2. 프로젝트 주요 기능</h1>
+<table>
+  <tbody>
+    <tr>
+      <td align="center">기능</td>
+      <td align="center">설명</td>
+      <td align="center">비고</td>
+    </tr>
+  </tbody>
+<h1>3. ERD 설계도</h1>
+<img src="https://github.com/user-attachments/assets/9d2ca369-5d39-48c7-a5d0-6ad5bea8c12c">
 
 
 
