@@ -151,6 +151,7 @@
   </tbody>
 </table>
 <h1>3. ERD 설계도</h1>
+<h3>>>ERD 바로가기 : https://www.erdcloud.com/d/RgkFD5yupCSJWcuzM</h3>
 <img src="https://github.com/user-attachments/assets/9d2ca369-5d39-48c7-a5d0-6ad5bea8c12c">
 
 
