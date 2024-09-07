@@ -203,7 +203,10 @@
 </table> 
 <h1>기능별 화면 및 소개</h1>
 <h4>프로필 사진 수정</h4>
-<img width="100%" height="800px" src="https://github.com/user-attachments/assets/c5f44e96-150a-4e42-89e0-6e3ab8bb9ffc">
+<img src="https://github.com/user-attachments/assets/02b8a333-a10f-4494-ba67-5219973fd2f9">
+<img src="https://github.com/user-attachments/assets/94e128e0-86aa-4257-8fa7-3dc67217e8bc">
+<img src="https://github.com/user-attachments/assets/c6a63e8b-43d6-4093-a9bb-74d4436cc1a7">
+<img src="https://github.com/user-attachments/assets/19b6f5b3-d205-4226-a014-d712905f6bad">
 
 
 
