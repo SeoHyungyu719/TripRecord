@@ -203,7 +203,7 @@
 </table> 
 <h1>기능별 화면 및 소개</h1>
 <h4>프로필 사진 수정</h4>
-<img src="">
+<img width="100%" height="800px" src="https://github.com/user-attachments/assets/c5f44e96-150a-4e42-89e0-6e3ab8bb9ffc">
 
 
 
