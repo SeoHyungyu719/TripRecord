@@ -204,7 +204,12 @@
   </tbody>
 </table> 
 <h1>기능별 코드 소개</h1>
-회원정보수정
+- 회원정보수정<br/> 
+&nbsp;&nbsp;- 내 정보 수정<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/resources/templates/views/myPage/myPage.html#L197
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/java/com/finalproject/triprecord/member/controller/MyPageController.java#L93
 내게시글 관리
 프로필 사진 교체
 포인트 결제 및 환불
