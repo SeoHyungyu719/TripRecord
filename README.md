@@ -207,15 +207,49 @@
 - 회원정보수정<br/> 
 &nbsp;&nbsp;- 내 정보 수정<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
-&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/resources/templates/views/myPage/myPage.html#L197
+https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/resources/templates/views/myPage/myPage.html#L197
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
-&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/java/com/finalproject/triprecord/member/controller/MyPageController.java#L93
-내게시글 관리
-프로필 사진 교체
-포인트 결제 및 환불
-플래너 프로필 수정
-플래너 취소요청
-구매확정 내역조회
+https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/java/com/finalproject/triprecord/member/controller/MyPageController.java#L93
+<hr/>
+&nbsp;&nbsp;- 비밀번호 수정<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/resources/templates/views/myPage/updateMyPwd.html#L110
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/java/com/finalproject/triprecord/member/controller/MyPageController.java#L135
+<hr/>
+&nbsp;&nbsp;- 포인트 결제<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/resources/templates/views/myPage/myPoint.html#L223
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+&nbsp;&nbsp;- 포인트 환불<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+<hr/>
+&nbsp;&nbsp;- 내 게시글 관리<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+<hr/>
+&nbsp;&nbsp;- 프로필 사진 교체<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+<hr/>
+&nbsp;&nbsp;- 플래너 프로필 수정<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+<hr/>
+&nbsp;&nbsp;- 플래너 취소요청<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+<hr/>
+&nbsp;&nbsp;- 구매확정 내역조회<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+
+
+
+
+
+
 
 
 
