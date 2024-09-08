@@ -204,7 +204,7 @@
   </tbody>
 </table> 
 <h1>기능별 코드 소개</h1>
-- 회원정보수정<br/> 
+
 &nbsp;&nbsp;- 내 정보 수정<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
 https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/resources/templates/views/myPage/myPage.html#L197
