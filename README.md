@@ -203,7 +203,7 @@
     </tr>       
   </tbody>
 </table> 
-<h1>기능별 코드 소개</h1>
+<h1>기능별 코드</h1>
 
 &nbsp;&nbsp;- 내 정보 수정<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
