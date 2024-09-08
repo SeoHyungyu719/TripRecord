@@ -226,26 +226,36 @@ https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a112
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
 https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/resources/templates/views/myPage/myPoint.html#L223
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
+https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/java/com/finalproject/triprecord/payment/controller/PaymentApiController.java#L74
+<hr/>
+&nbsp;&nbsp;- 내 문의글 관리<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/resources/templates/views/myPage/myInquiry.html#L84
 <hr/>
 &nbsp;&nbsp;- 내 게시글 관리<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
-&nbsp;&nbsp;&nbsp;&nbsp;-Controller
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/resources/templates/views/myPage/myBoard.html#L259
 <hr/>
 &nbsp;&nbsp;- 프로필 사진 교체<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/resources/templates/common/myPageUpperBar.html#L125
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/java/com/finalproject/triprecord/member/controller/MyPageController.java#L275
 <hr/>
 &nbsp;&nbsp;- 플래너 프로필 수정<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/resources/templates/views/myPage/updatePlanner.html#L272
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/java/com/finalproject/triprecord/member/controller/MyPageController.java#L1078
 <hr/>
 &nbsp;&nbsp;- 플래너 취소요청<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/resources/templates/views/myPage/plannerPage.html#L208
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
 <hr/>
-&nbsp;&nbsp;- 구매확정 내역조회<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;-Views
+&nbsp;&nbsp;- 구매확정 시 플래너에게 자동 포인트 자동 충전<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
+https://github.com/SeoHyungyu719/TripRecord/blob/15f1a7ba400f3f82514e16a887759af312c76bd5/tripRecord/src/main/java/com/finalproject/triprecord/reconciliation/controller/ReconciliationController.java#L19
 
 
 
