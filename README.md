@@ -219,10 +219,12 @@ https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a112
 <hr/>
 &nbsp;&nbsp;- 포인트 결제<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
-https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/resources/templates/views/myPage/myPoint.html#L223
+https://github.com/SeoHyungyu719/TripRecord/blob/5882bf82dc96df421d34e0e1cbe00ff4cf8230f4/tripRecord/src/main/resources/templates/views/myPage/myPayPoint.html#L226
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
-&nbsp;&nbsp;- 포인트 환불<br/>
+https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/java/com/finalproject/triprecord/payment/controller/PaymentApiController.java#L46
+&nbsp;&nbsp;- 포인트 결제내역 조회 및 환불<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
+https://github.com/SeoHyungyu719/TripRecord/blob/eef531db3a5d04b51ef95e67040a1129e71ec6bf/tripRecord/src/main/resources/templates/views/myPage/myPoint.html#L223
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
 <hr/>
 &nbsp;&nbsp;- 내 게시글 관리<br/>
