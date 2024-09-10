@@ -161,45 +161,34 @@
     <tr>
       <td align="center">기능</td>
       <td align="center">설명</td>
-      <td align="center">비고</td>
     </tr>
     <tr>
       <td>회원정보 수정</td>
       <td> 닉네임, 이메일, 전화번호 수정</td>
-      <td></td>
     </tr>
     <tr>
       <td>내 게시글 관리</td>
       <td>게시글 조회 및 상세페이지로 이동가능</td>
-      <td></td>
     </tr>
     <tr>
       <td>프로필 사진 기능</td>
       <td>사진 교체 가능</td>
-      <td>
-      </td>
     </tr>
     <tr>
       <td>포인트 결제 및 환불</td>
       <td>포인트 결제 환불 가능</td>
-      <td></td>
     </tr>   
      <tr>
       <td>플래너 프로필 수정</td>
       <td>프로필 정보 수정 가능</td>
-      <td>
-      </td>
     </tr>
     <tr>
       <td>플래너 취소 요청</td>
       <td>취소 사유 입력 후 취소 가능</td>
-      <td></td>
     </tr> 
     <tr>
       <td>구매확정 내역 조회</td>
       <td>구매확정한 내역 조회</td>
-      <td>
-      </td>
     </tr>       
   </tbody>
 </table> 
