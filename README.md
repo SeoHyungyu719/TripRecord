@@ -206,6 +206,7 @@
 <h1>기능별 코드</h1>
 
 &nbsp;&nbsp;- 내 정보 수정<br/>
+https://github.com/user-attachments/assets/ec89c758-4b34-4b77-aaf1-47207b06a552
 &nbsp;&nbsp;&nbsp;&nbsp;-Views
 https://github.com/SeoHyungyu719/TripRecord/blob/36d55d8f9501340440c2364d311c4f10b474c8b5/tripRecord/src/main/resources/templates/views/myPage/myPage.html#L197
 &nbsp;&nbsp;&nbsp;&nbsp;-Controller
